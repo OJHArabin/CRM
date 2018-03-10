@@ -21,7 +21,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@Transactional
+	
 	public List<Customer> getCustomer() {
 
 		Session currentSession=sessionFactory.getCurrentSession();
@@ -35,6 +35,14 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		
 		return customer;
+	}
+
+
+	public void saveCustomer(Customer theCustomer) {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		currentSession.save(theCustomer);
 	}
 
 }
