@@ -22,12 +22,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private SessionFactory sessionFactory;
 	
 	
-	public List<Customer> getCustomer() {
+	public List<Customer> getCustomers() {
 
 		Session currentSession=sessionFactory.getCurrentSession();
 		
 		
-		Query<Customer> theQuery = currentSession.createQuery("from Customer", Customer.class);
+		Query<Customer> theQuery = currentSession.createQuery("from Customer order by lastName", Customer.class);
 		
 		
 		List<Customer> customer=theQuery.getResultList();
@@ -42,7 +42,56 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		currentSession.save(theCustomer);
+		currentSession.saveOrUpdate(theCustomer);
+	}
+
+
+	public Customer getCustomer(int theId) {
+		 Session currentSession = sessionFactory.getCurrentSession();
+		 
+		 Customer theCustomer =currentSession.get(Customer.class, theId);
+		 
+		return theCustomer;
+	}
+
+
+	public void deleteCustomer(int theId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query theQuery = currentSession.createQuery("delete from Customer where id=:customerId");
+		
+		theQuery.setParameter("customerId", theId);
+
+		
+		theQuery.executeUpdate();
+		
+	}
+
+
+	public List<Customer> searchCustomer(String theSearchName) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		
+		Query theQuery =null;
+		
+		
+		if(theSearchName!=null && theSearchName.trim().length()>0) {
+			
+			theQuery = currentSession.createQuery("from Customer where lower(firstName) like:theName or lower(lastName)like:theName",Customer.class);
+			
+			theQuery.setParameter("theName", "%" + theSearchName.toLowerCase() + "%");
+			
+			
+		}else {
+			
+			theQuery = currentSession.createQuery("from Customer", Customer.class);
+			
+		}
+		
+		  List <Customer> customers = theQuery.getResultList(); 
+          
+	                
+	        return customers; 
 	}
 
 }

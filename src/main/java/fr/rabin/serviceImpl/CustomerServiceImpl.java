@@ -21,9 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	
 	@Transactional
-	public List<Customer> getCustomer() {
+	public List<Customer> getCustomers() {
 
-		return customerDAO.getCustomer();
+		return customerDAO.getCustomers();
 	}
 
     @Transactional
@@ -32,5 +32,28 @@ public class CustomerServiceImpl implements CustomerService {
 		customerDAO.saveCustomer(theCustomer);
     	
 	}
+
+    @Transactional
+	public Customer getCustomer(int theId) {
+
+		return customerDAO.getCustomer(theId);
+	}
+
+    @Transactional
+	public void deleteCustomer(int theId) {
+		customerDAO.deleteCustomer(theId);
+		
+	}
+
+    
+    @Transactional
+	public List<Customer> searchCustomer(String theSearchName) {
+		
+		return customerDAO.searchCustomer(theSearchName);
+	}
+    
+    
+    
+
 
 }
